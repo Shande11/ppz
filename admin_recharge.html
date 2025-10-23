@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Recargar Saldo{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Recargar Saldo de Usuario (Monedero)</h2>
+    <hr>
+
+    <form method="POST">
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <label for="user_id" class="form-label">ID o Código de Usuario</label>
+                <input type="number" class="form-control" id="user_id" name="user_id" required placeholder="Ej. 12">
+                <div class="form-text">Usa el ID de la tabla de abajo para recargar.</div>
+            </div>
+            <div class="col-md-4">
+                <label for="amount" class="form-label">Cantidad a Recargar (RD$)</label>
+                <input type="number" step="0.01" class="form-control" id="amount" name="amount" required placeholder="Ej. 1000.00">
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Confirmar Recarga</button>
+            </div>
+        </div>
+    </form>
+
+    <h4 class="mt-5">Usuarios Estudiantes y Saldo Actual</h4>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Email</th>
+                    <th>Saldo (RD$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td class="fw-bold text-success">${{ "{:,.2f}".format(user.balance) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

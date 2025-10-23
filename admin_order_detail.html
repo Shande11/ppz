@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Detalles del Pedido #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Detalles del Pedido #{{ order.id }}</h2>
+    <div class="card mb-3">
+        <div class="card-body">
+            <p><strong>Usuario:</strong> {{ order.user.username }}</p>
+            <p><strong>Fecha:</strong> {{ order.order_date.strftime('%d-%m-%Y %H:%M') }}</p>
+            <p><strong>Estado:</strong> 
+                <span class="badge 
+    {% if order.status == 'Pendiente' %} bg-danger
+    {% elif order.status == 'En preparación' %} bg-warning
+    {% elif order.status == 'Listo' %} bg-info
+    {% elif order.status == 'Entregado' %} bg-success
+    {% else %} bg-secondary {% endif %}
+">{{ order.status }}</span>
+
+
+            </p>
+            <p><strong>Total:</strong> ${{ '%.2f'|format(order.total_amount) }}</p>
+            {% if order.status != 'Entregado' %}
+    <form method="POST" action="{{ url_for('mark_order_delivered', order_id=order.id) }}">
+        <button type="submit" class="btn btn-success mt-3">✅ Marcar como Entregado</button>
+    </form>
+{% else %}
+    <div class="alert alert-success mt-3">
+        🟢 Este pedido ya fue entregado.
+    </div>
+{% endif %}
+
+        </div>
+    </div>
+
+    {% if order_items %}
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order_items %}
+                    <tr>
+                        <td>{{ item.menu_item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ '%.2f'|format(item.price_at_time) }}</td>
+                        <td>${{ '%.2f'|format(item.quantity * item.price_at_time) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">No hay ítems en este pedido.</div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('view_orders') }}" class="btn btn-secondary">Volver a Pedidos</a>
+    </div>
+</div>
+{% endblock %}

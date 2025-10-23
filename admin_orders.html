@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de Pedidos{% endblock %}
+
+{% block content %}
+    <h2 class="text-center mb-4">Gestión de Pedidos (Admin)</h2>
+    <hr>
+    
+    {% if orders %}
+        <p class="text-muted">Total de pedidos encontrados: {{ orders|length }}</p>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Total</th>
+                    <th>Fecha/Hora</th>
+                    <th>Estado</th>
+                    <th>Detalles</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.user.username }}</td>
+                        <td>${{ '%.2f' | format(order.total_amount) }}</td>
+                        <td>{{ order.order_date.strftime('%d-%m %H:%M') }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if order.status == 'Pendiente' %} bg-danger
+                                {% elif order.status == 'En preparación' %} bg-warning text-dark
+                                {% elif order.status == 'Listo' %} bg-success
+                                {% else %} bg-secondary {% endif %}
+                            ">{{ order.status }}</span>
+                        </td>
+                        
+                        <td>
+                          <a href="{{ url_for('view_order_detail', order_id=order.id) }}" class="btn btn-sm btn-info">
+    Ver Items ({{ order.items|length }})
+</a>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info text-center">
+            No hay pedidos nuevos por el momento. ¡A esperar!
+        </div>
+    {% endif %}
+
+    <div class="text-center mt-3">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Volver al Dashboard</a>
+    </div>
+{% endblock %}

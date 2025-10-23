@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin — El Recesó</title>
+<link rel="stylesheet" href="styles.css"></head>
+<body>
+  <main style="padding:16px">
+    <h2>Admin — El Recesó</h2>
+    <div id="login">
+      <label>Usuario:<input id="user"></label><br>
+      <label>Clave:<input type="password" id="pass"></label><br>
+      <button id="loginBtn" class="btn">Entrar</button>
+    </div>
+
+    <div id="panel" class="hidden">
+      <h3>Productos</h3>
+      <div id="products"></div>
+      <h3>Añadir producto</h3>
+      <input id="p-name" placeholder="Nombre"><input id="p-price" placeholder="Precio">
+      <input id="p-img" placeholder="URL Imagen">
+      <button id="addP" class="btn">Agregar</button>
+
+      <h3>Pedidos</h3>
+      <div id="orders"></div>
+    </div>
+  </main>
+<script>
+const API='http://127.0.0.1:5000/api';
+document.getElementById('loginBtn').onclick = async ()=>{
+  const u = document.getElementById('user').value;
+  const p = document.getElementById('pass').value;
+  const res = await fetch(`${API}/admin/login`, {
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({user:u,pass:p})
+  });
+  const j = await res.json();
+  if(j.ok){ document.getElementById('login').classList.add('hidden'); document.getElementById('panel').classList.remove('hidden'); loadAdmin(); }
+  else alert('Credenciales incorrectas');
+}
+
+async function loadAdmin(){
+  const prods = await (await fetch(`${API}/menu`)).json();
+  const cont=document.getElementById('products'); cont.innerHTML='';
+  prods.forEach(p=>{
+    const d=document.createElement('div'); d.className='card';
+    d.innerHTML=`<strong>${p.name}</strong> - $${p.price.toFixed(2)} <button onclick="deleteP(${p.id})">Eliminar</button>`;
+    cont.appendChild(d);
+  });
+  const orders = await (await fetch(`${API}/orders`)).json();
+  const ordDiv = document.getElementById('orders'); ordDiv.innerHTML='';
+  orders.forEach(o=>{
+    const d=document.createElement('div'); d.className='card';
+    d.innerHTML = `<strong>#${o.id}</strong> ${o.item_name} - ${o.status} <button onclick="markReady(${o.id})">Listo</button>`;
+    ordDiv.appendChild(d);
+  });
+}
+window.deleteP = async id => { await fetch(`${API}/admin/product/${id}`,{method:'DELETE'}); loadAdmin(); }
+window.markReady = async id => { await fetch(`${API}/admin/order/${id}/ready`,{method:'POST'}); loadAdmin(); }
+
+document.getElementById('addP').onclick = async ()=>{
+  const name=document.getElementById('p-name').value;
+  const price=parseFloat(document.getElementById('p-price').value||0);
+  const img=document.getElementById('p-img').value;
+  await fetch(`${API}/admin/product`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,price,image:img})});
+  loadAdmin();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Mis Pedidos{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">🧾 Mis Pedidos</h2>
+
+    {% if orders %}
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.order_date.strftime('%d-%m-%Y %H:%M') }}</td>
+                        <td>${{ '%.2f'|format(order.total_amount) }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if order.status == 'Pendiente' %} bg-danger
+                                {% elif order.status == 'En preparación' %} bg-warning text-dark
+                                {% elif order.status == 'Listo' %} bg-info
+                                {% elif order.status == 'Entregado' %} bg-success
+                                {% else %} bg-secondary {% endif %}
+                            ">{{ order.status }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info text-center">
+            Aún no has realizado ningún pedido.
+        </div>
+    {% endif %}
+
+    <div class="text-center mt-3">
+        <a href="{{ url_for('view_menu') }}" class="btn btn-primary">Volver al Menú</a>
+    </div>
+</div>
+{% endblock %}

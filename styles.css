@@ -1,0 +1,134 @@
+/*
+  El Receso — Tema Profesional
+  - Tipografía limpia, colores de marca y mejor contraste
+  - Pulido de navbar, botones, tablas, formularios y tarjetas
+*/
+
+/* Fuente y variables */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --brand-900: #1f2937; /* gris azulado profundo */
+  --brand-700: #0f172a; /* azul noche */
+  --brand-500: #2563eb; /* azul primario */
+  --accent: #f59e0b;   /* dorado/acento */
+  --success: #22c55e;
+  --danger: #ef4444;
+  --info: #06b6d4;
+  --bg: #0b1220;       /* fondo oscuro sutil */
+  --surface: #111827;  /* paneles/cards */
+  --text: #e5e7eb;     /* texto claro */
+  --muted: #94a3b8;    /* texto secundario */
+  --shadow: 0 10px 25px rgba(0,0,0,0.35);
+  --radius: 14px;
+}
+
+/* Reset básico y tipografía */
+html, body { height: 100%; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: radial-gradient(1200px 600px at 20% -10%, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0) 60%),
+              radial-gradient(900px 500px at 100% 0%, rgba(245,158,11,0.12) 0%, rgba(245,158,11,0) 55%),
+              linear-gradient(180deg, #0a0f1c 0%, var(--bg) 100%);
+  color: var(--text);
+}
+
+.container, .container-fluid { max-width: 1200px; }
+
+/* Navbar refinada */
+.navbar {
+  background: linear-gradient(180deg, var(--brand-700) 0%, var(--brand-900) 100%);
+  box-shadow: var(--shadow);
+}
+.navbar .navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.navbar .nav-link { color: var(--text) !important; opacity: 0.9; }
+.navbar .nav-link:hover { color: white !important; opacity: 1; }
+.navbar .dropdown-menu { border-radius: 10px; overflow: hidden; }
+
+/* Hero/Callout (index) */
+.hero {
+  background: linear-gradient(180deg, rgba(37,99,235,0.12) 0%, rgba(37,99,235,0.05) 100%),
+              rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.hero h1 { color: #fff; }
+.hero p { color: var(--muted); }
+
+/* Tarjetas, paneles y sombras */
+.card, .bg-light, .list-group-item, .alert, .table, .form-control, .dropdown-menu {
+  border-radius: var(--radius) !important;
+}
+.card, .bg-light {
+  background: var(--surface) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  color: var(--text) !important;
+  box-shadow: var(--shadow);
+}
+
+/* Tablas */
+.table {
+  color: var(--text);
+  border-color: rgba(255,255,255,0.08);
+}
+.table thead { background: rgba(255,255,255,0.06); }
+.table-hover tbody tr:hover { background: rgba(255,255,255,0.04); }
+.table-striped > tbody > tr:nth-of-type(odd) { background-color: rgba(255,255,255,0.03); }
+
+/* Alertas */
+.alert { border: 1px solid rgba(255,255,255,0.1); }
+.alert-success { background: rgba(34,197,94,0.15); color: #d1fae5; }
+.alert-danger { background: rgba(239,68,68,0.15); color: #fee2e2; }
+.alert-info { background: rgba(6,182,212,0.15); color: #cffafe; }
+.alert-warning { background: rgba(245,158,11,0.15); color: #fffbeb; }
+
+/* Botones — tonos de marca */
+.btn { border-radius: 12px; padding: 0.6rem 1rem; font-weight: 600; }
+.btn-primary { background: var(--brand-500); border: none; }
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-success { background: var(--success); border: none; }
+.btn-success:hover { filter: brightness(1.1); }
+.btn-warning { background: var(--accent); color: #1b2838; border: none; }
+.btn-warning:hover { filter: brightness(1.1); }
+.btn-secondary { background: #334155; border: none; }
+.btn-info { background: var(--info); border: none; }
+
+/* Badges */
+.badge { border-radius: 999px; padding: 0.5em 0.75em; font-weight: 700; }
+
+/* Formularios */
+.form-label { color: var(--muted); font-weight: 600; }
+.form-control {
+  background: #0d1424; color: var(--text); border: 1px solid rgba(255,255,255,0.08);
+}
+.form-control:focus {
+  border-color: var(--brand-500); box-shadow: 0 0 0 0.25rem rgba(37,99,235,0.25);
+}
+
+/* Footer */
+footer {
+  margin-top: 48px; padding: 32px 0; color: var(--muted);
+}
+.footer-content {
+  display: flex; gap: 24px; flex-wrap: wrap; align-items: center; justify-content: space-between;
+}
+.footer-brand { font-weight: 700; color: var(--text); }
+.footer-links a { color: var(--muted); text-decoration: none; margin-right: 12px; }
+.footer-links a:hover { color: #fff; }
+
+/* Utilidades */
+.shadow-brand { box-shadow: var(--shadow); }
+.text-muted-brand { color: var(--muted) !important; }
+.rounded-xl { border-radius: var(--radius) !important; }
+
+/* Espaciado de contenedor */
+.container.mt-4 { margin-top: 2rem !important; }
+
+/* Ajustes de dropdown y nav en mobile */
+@media (max-width: 992px) {
+  .navbar .navbar-collapse { padding-top: 0.5rem; }
+}

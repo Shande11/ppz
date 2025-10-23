@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h2 class="text-center">Panel de Usuario: {{ current_user.username }}</h2>
+    <div class="alert alert-primary" role="alert">
+        ¡Felicidades! Esta página está **TOTALMENTE PROTEGIDA**. Solo los usuarios logueados pueden verla.
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Tu Información</h3>
+            <ul class="list-group">
+                <li class="list-group-item">**ID de Usuario:** {{ current_user.id }}</li>
+                <li class="list-group-item">**Email:** {{ current_user.email }}</li>
+                <li class="list-group-item">**Rol:** <span class="badge bg-info">{{ current_user.role | upper }}</span></li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3>Próximos Pasos (El otro level):</h3>
+            {% if current_user.role == 'admin' %}
+                <p>Como **ADMINISTRADOR**, puedes empezar a crear:</p>
+                <ul>
+                    <li>Ruta para **Añadir/Editar Productos** en la base de datos.</li>
+                    <li>Ruta para ver **Todos los Pedidos** y gestionarlos.</li>
+                </ul>
+            {% else %}
+                 <p>Como **ESTUDIANTE**, el siguiente paso es:</p>
+                <ul>
+                    <li>Crear la página del **Menú** para hacer pedidos.</li>
+                    <li>Implementar el **Carrito de Compras** (usando sesiones o una tabla de pedidos).</li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
